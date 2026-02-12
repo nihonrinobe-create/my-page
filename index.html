@@ -1,8 +1,3 @@
-<!-- =========================
-  index.html（お客様の申込みフォーム）
-  ✅これを丸ごとコピペして上書きしてください
-  ✅一番下の GAS_API_URL だけ自分のURLに差し替え
-========================= -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>注文入力フォーム</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 <style>
   :root{
     --blue:#0055a4; --blue-dark:#003d7a; --bg:#f5f7fa; --card:#fff; --text:#1a1a1a;
@@ -21,7 +17,7 @@
   .hero{background:linear-gradient(160deg,var(--blue) 0%,var(--blue-dark) 100%);color:#fff;padding:22px 16px;text-align:center}
   .hero h1{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:.02em}
 
-  .progress-bar{display:flex;gap:6px;padding:14px 16px;max-width:520px;margin:0 auto}
+  .progress-bar{display:flex;gap:4px;padding:14px 16px;max-width:520px;margin:0 auto}
   .progress-step{flex:1;height:4px;background:var(--border);border-radius:2px}
   .progress-step.active{background:var(--blue)}
   .progress-step.done{background:var(--green)}
@@ -36,7 +32,7 @@
 
   .field{margin-bottom:16px}
   .field label{display:block;font-weight:700;font-size:.92rem;margin-bottom:6px}
-  /* ✅チェック/ラジオを壊さない：通常入力だけにスタイルを当てる */
+  
   .field input:not([type="checkbox"]):not([type="radio"]),
   .field select,
   .field textarea{
@@ -111,6 +107,21 @@
     font-weight:900;color:#0d47a1;text-align:center;margin:10px 0;user-select:all
   }
 
+  /* 約款表示エリア */
+  .terms-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 16px;
+  }
+  .terms-box ul { padding-left: 1.4em; margin: 0; }
+  .terms-box li { margin-bottom: 0.8em; }
+
   .big-check{
     display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:2px dashed #ddd;background:#fff
   }
@@ -136,6 +147,9 @@
 </head>
 
 <body>
+  <form class="h-adr">
+  <span class="p-country-name" style="display:none;">Japan</span>
+
   <div class="hero"><h1>注文入力フォーム</h1></div>
 
   <div class="progress-bar">
@@ -144,11 +158,11 @@
     <div class="progress-step" id="p3"></div>
     <div class="progress-step" id="p4"></div>
     <div class="progress-step" id="p5"></div>
+    <div class="progress-step" id="p6"></div>
   </div>
 
   <div class="container">
 
-    <!-- STEP 1 -->
     <div class="step active" id="step1">
       <div class="card">
         <div class="card-title">📝 案件管理（必須）</div>
@@ -199,14 +213,14 @@
 
         <div class="field" id="f_zip">
           <label>郵便番号 <span style="color:var(--red);font-weight:900;">※必須</span></label>
-          <input type="tel" id="c_zip" maxlength="8" placeholder="例：1760001" inputmode="numeric" />
-          <div class="field-hint">※ハイフン無し推奨</div>
+          <input type="tel" id="c_zip" class="p-postal-code" maxlength="8" placeholder="例：1760001" inputmode="numeric" />
+          <div class="field-hint">※ハイフン無しで入力すると住所が自動入力されます</div>
           <div class="error-msg">郵便番号を入力してください</div>
         </div>
 
         <div class="field" id="f_addr">
           <label>ご住所 <span style="color:var(--red);font-weight:900;">※必須</span></label>
-          <input type="text" id="c_address" placeholder="例：東京都練馬区..." />
+          <input type="text" id="c_address" class="p-region p-locality p-street-address" placeholder="例：東京都練馬区..." />
           <div class="error-msg">住所を入力してください</div>
         </div>
 
@@ -217,8 +231,39 @@
       </div>
     </div>
 
-    <!-- STEP 2 -->
     <div class="step" id="step2">
+      <div class="card">
+        <div class="card-title">📄 作業・サービス約款（全文）</div>
+        <p style="font-size:.9rem; color:#666; margin-bottom:10px;">
+          以下の内容を必ずご確認いただき、同意の上で次へお進みください。
+        </p>
+
+        <div class="terms-box">
+          <ul>
+            <li><strong>サービス内容の合意</strong><br>お客様は、作業員から提示された作業内容およびサービス説明を受け、本約款および別途提示される見積書の内容に同意した上で、本サービスを発注するものとします。</li>
+            
+            <li><strong>損害賠償の範囲</strong><br>当社の施工上の瑕疵（ミス）によりお客様に損害が生じた場合、当社が負担する損害賠償の額は、当該作業・サービスの料金額を上限とします。これを超える範囲の賠償責任は負いかねます。</li>
+            
+            <li><strong>料金に関する合意</strong><br>予約時にお伝えした概算金額と、現場状況により算出された確定金額に相違が発生した場合、現場にて案内した最終的な料金に同意し、発注するものとします。</li>
+            
+            <li><strong>個人情報の取扱い</strong><br>裏面（または別途提示）の「個人情報の取扱いについて」を確認し、収集された個人情報が本サービスの提供および関連業務のために利用されることに同意します。</li>
+            
+            <li><strong>作業完了の確認</strong><br>作業終了後、お客様は作業箇所および動作を確認し、作業が完了したことを認めるものとします。</li>
+            
+            <li><strong>廃棄物の処理</strong><br>本作業に伴い発生した交換済みの製品、部品、梱包材等は、施工会社が回収し、適切に廃棄処理することに了承します。</li>
+          </ul>
+        </div>
+
+        <div class="field">
+          <label class="big-check" style="border-color:var(--blue); background:#e3f2fd;">
+            <input type="checkbox" id="agree_terms_check" />
+            <div class="t" style="color:var(--blue)">約款の内容を確認し、同意します</div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" id="step3">
       <div class="card">
         <div class="card-title">🔧 対象機器・症状</div>
 
@@ -252,39 +297,12 @@
       </div>
     </div>
 
-    <!-- STEP 3 -->
-    <!-- ▼▼ 作業・サービス約款（STEP3に表示） ▼▼ -->
-<div class="card" style="margin-top:16px;">
-  <div class="card-title">📄 作業・サービス約款（重要）</div>
-
-  <div style="
-    background:#f9fafb;
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:14px;
-    font-size:0.88rem;
-    line-height:1.6;
-  ">
-    <ul style="padding-left:1.2em; margin:0;">
-      <li>作業・サービスの説明を受け、サービス約款・見積書に同意し発注する</li>
-      <li>当社の瑕疵による場合には、当社が負う損害賠償の額は、作業・サービス料金の金額を超えない範囲とする</li>
-      <li>予約時の金額案内と相違が発生した際は、現場で案内した料金に同意し発注する</li>
-      <li>裏面の「個人情報の取扱いについて」を確認し同意する</li>
-      <li>作業が完了したことを確認した</li>
-      <li>作業後回収した製品や部品は施工会社が破棄することを了承する</li>
-    </ul>
-  </div>
-</div>
-<!-- ▲▲ 作業・サービス約款ここまで ▲▲ -->
-
-    <div class="step" id="step3">
+    <div class="step" id="step4">
       <div class="card">
         <div class="card-title">📋 作業内容</div>
 
         <div class="field">
           <label>作業種別</label>
-
-          <!-- ✅指定どおり：左=故障診断費用(原因究明作業)、右=修理（デフォルトは左を選択） -->
           <div class="grid-2" id="orderTypeGrid">
             <label class="choice selected">
               <input type="radio" name="order_type" value="原因究明作業" checked />
@@ -296,7 +314,6 @@
             </label>
           </div>
 
-          <!-- ✅修理メニュー（修理選択時のみ表示） -->
           <div id="repair_options_area">
             <div class="field-hint" style="margin-top:10px;color:#c62828;font-weight:900;">
               ※価格は税込（2026年改訂版ベース）／「別途見積」は金額に加算されません
@@ -328,7 +345,7 @@
                 <button class="btn-circle" type="button" onclick="changeCount(this,1)">+</button>
               </div>
             </div>
-
+            
             <div class="repair-item-row" data-price="17600" data-name="フレア加工・バルブコア交換">
               <div class="repair-info">フレア加工・バルブコア交換<br><small>17,600円</small></div>
               <div class="counter-ui">
@@ -412,13 +429,11 @@
 
             <div class="extra-box">
               <div style="font-weight:900;color:#8a4b00;">別途見積（このフォームでは金額に加算しません）</div>
-
               <label class="extra-row">
                 <input type="checkbox" id="extra_relocate" />
                 <span class="txt">移設費用</span>
                 <span class="sub">別途費用</span>
               </label>
-
               <label class="extra-row">
                 <input type="checkbox" id="extra_hanging" />
                 <span class="txt">室外機天吊り</span>
@@ -447,16 +462,14 @@
       </div>
     </div>
 
-    <!-- STEP 4 -->
-    <div class="step" id="step4">
+    <div class="step" id="step5">
       <div class="card">
         <div class="card-title">✅ 入力内容の確認</div>
         <div id="confirmContent"></div>
       </div>
     </div>
 
-    <!-- STEP 5 -->
-    <div class="step" id="step5">
+    <div class="step" id="step6">
       <div class="card">
         <div class="card-title">🧾 契約・承諾 <span style="color:var(--red); font-size:.85em;">(重要)</span></div>
 
@@ -508,8 +521,7 @@
       </div>
     </div>
 
-    <!-- STEP 6 -->
-    <div class="step" id="step6">
+    <div class="step" id="step7">
       <div class="complete-screen">
         <div class="complete-icon">🎉</div>
         <h2 style="margin-bottom:8px;">受付完了しました</h2>
@@ -521,6 +533,7 @@
     </div>
 
   </div>
+  </form>
 
   <div class="bottom-nav">
     <button class="btn btn-back" onclick="prevStep()" id="btnBack" style="display:none" type="button">戻る</button>
@@ -538,7 +551,7 @@ let currentStep = 1;
 let couponApplied = false;
 
 window.addEventListener('load', () => {
-  // URLパラメータ反映（任意）
+  // URLパラメータ反映
   const params = new URLSearchParams(location.search);
   const p_id = params.get('case_id');
   if (p_id) {
@@ -593,7 +606,6 @@ function bindChoiceUI_(containerSel, type, onChange) {
       e.preventDefault();
     });
   });
-
   refresh();
 }
 
@@ -630,7 +642,7 @@ function updateUI() {
   const active = document.getElementById('step' + currentStep);
   if (active) active.classList.add('active');
 
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 6; i++) {
     const p = document.getElementById('p' + i);
     if (!p) continue;
     p.className = 'progress-step';
@@ -642,8 +654,8 @@ function updateUI() {
   const next = document.getElementById('btnNext');
   back.style.display = currentStep === 1 ? 'none' : 'block';
 
-  if (currentStep === 5) next.textContent = '上記に同意して送信';
-  else if (currentStep === 6) document.querySelector('.bottom-nav').style.display = 'none';
+  if (currentStep === 6) next.textContent = '上記に同意して送信';
+  else if (currentStep === 7) document.querySelector('.bottom-nav').style.display = 'none';
   else next.textContent = '次へ';
 }
 
@@ -654,6 +666,7 @@ function setFieldError(fieldId, isError) {
 }
 
 function validateStep(step) {
+  // Step 1: 必須項目チェック
   if (step === 1) {
     const caseNum = document.getElementById('c_case_num').value.trim();
     const emp = document.getElementById('c_emp_id').value.trim();
@@ -677,7 +690,16 @@ function validateStep(step) {
     }
   }
 
-  if (step === 5) {
+  // Step 2: 約款同意チェック
+  if (step === 2) {
+    if (!document.getElementById('agree_terms_check').checked) {
+      alert('約款の内容を確認し、同意チェックを入れてください。');
+      return false;
+    }
+  }
+
+  // Step 6: 最終承諾チェック
+  if (step === 6) {
     const inputConsent = document.getElementById('consent_input').value.trim();
     const signature = document.getElementById('c_signature').value.trim();
 
@@ -732,7 +754,8 @@ function calcTotal() {
 function nextStep() {
   if (!validateStep(currentStep)) return;
 
-  if (currentStep === 3) {
+  // Step 4の終わりで確認画面生成
+  if (currentStep === 4) {
     const prefix = document.getElementById('c_case_prefix').value;
     const num = document.getElementById('c_case_num').value.trim();
     const caseId = `${prefix}-${num}`;
@@ -772,7 +795,8 @@ function nextStep() {
     document.getElementById('confirmContent').innerHTML = html;
   }
 
-  if (currentStep === 4) {
+  // Step 5の終わりで金額計算
+  if (currentStep === 5) {
     const oType = document.querySelector('input[name="order_type"]:checked').value;
     const equip = document.getElementById('c_equipment').value;
     const feeInput = document.getElementById('fee_diagnosis');
@@ -781,7 +805,6 @@ function nextStep() {
     let amt = 0;
     if (oType === '原因究明作業') {
       feeLabel.textContent = '故障診断費用（税込）';
-      // ✅指定：家庭用=9,000 / それ以外=15,000
       amt = (equip === 'ルームエアコン') ? 9000 : 15000;
       if (couponApplied) amt = Math.max(0, amt - 3000);
     } else {
@@ -791,7 +814,7 @@ function nextStep() {
     feeInput.value = amt.toLocaleString();
   }
 
-  if (currentStep === 5) { doSubmit(); return; }
+  if (currentStep === 6) { doSubmit(); return; }
 
   currentStep++;
   updateUI();
@@ -828,7 +851,6 @@ async function doSubmit() {
   const rawType = document.querySelector('input[name="order_type"]:checked').value;
   let orderType = rawType;
 
-  // 見やすい表記にする（あなたの指定に寄せる）
   if (rawType === '原因究明作業') orderType = '故障診断費用(原因究明作業)';
   if (rawType === '修理') orderType = `修理：${getSelectedRepair()}`;
 
@@ -869,7 +891,7 @@ async function doSubmit() {
     console.log('送信処理：環境により応答が取得できない場合があります', e);
   }
 
-  currentStep = 6;
+  currentStep = 7;
   updateUI();
 }
 </script>
